@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, TouchableHighlight, Alert } from 'react-native'
 import React from 'react'
 
-const ListItem = ({title, content, date, deleteFunc, style}) => {
+const ListItem = ({title, content, date, deleteFunc, style, index, navigation, route}) => {
   return (
     <TouchableHighlight
+      onPress={() => {
+        navigation.navigate("edit", {noteIndex: index, route: route});
+      }}
       onLongPress={() => {
         Alert.alert("Delete note?", "Are you sure you want to delete this note?", [
           {text: "Cancel", onPress: () => {}},

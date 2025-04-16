@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import MyButton from '../components/MyButton'
 
-const AddNote = (props) => {
+const AddCategory = (props) => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
 
@@ -13,7 +13,7 @@ const AddNote = (props) => {
   const randomColors = props.randomColors;
   const navigation = props.navigation;
 
-  const addNote = async () => {
+  const addCategory = async () => {
     const note = {
       id: lastId + 1,
       title: title,
@@ -33,25 +33,17 @@ const AddNote = (props) => {
       <TextInput
         style={styles.input}
         defaultValue={title}
-        placeholder="Title..."
+        placeholder="Name..."
         placeholderTextColor="#ffffffbb"
         multiline={false}
         onChangeText={(text) => setTitle(text)}
-      />
-      <TextInput
-        style={styles.longInput}
-        defaultValue={content}
-        placeholder="Content..."
-        placeholderTextColor="#ffffffbb"
-        multiline={true}
-        onChangeText={(text) => setContent(text)}
       />
       <MyButton color="#ff000099" text="Confirm" pressFunc={addNote}/>
     </View>
   )
 }
 
-export default AddNote
+export default AddCategory
 
 const styles = StyleSheet.create({
   wrapper: {

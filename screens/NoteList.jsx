@@ -28,12 +28,15 @@ const NoteList = (props) => {
       data={notes}
       keyExtractor={(item) => item.id}
       numColumns={2}
-      renderItem={({item}) => (
+      renderItem={({item, index}) => (
         <ListItem
           title={item.title}
           content={item.content}
           date={item.date}
           deleteFunc={() => deleteUser(item)}
+          navigation={props.navigation}
+          index={index}
+          route={props.route}
           style={{
             width: itemSize,
             height: itemSize,

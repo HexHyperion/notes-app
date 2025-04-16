@@ -1,32 +1,39 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import MyButton from '../components/MyButton'
 
-const AddNote = (props) => {
+const EditNote = ({route, ...props}) => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
-
+  
+  const noteIndex = route.params.noteIndex;
   const notes = props.notes;
   const setNotes = props.setNotes;
-  const lastId = props.lastId;
-  const setLastId = props.setLastId;
-  const randomColors = props.randomColors;
   const navigation = props.navigation;
 
-  const addNote = async () => {
-    const note = {
-      id: lastId + 1,
-      title: title,
-      content: content,
-      date: new Date().toLocaleDateString(),
-      color: randomColors[Math.floor(Math.random() * randomColors.length)]
-    }
-    setNotes([...notes, note]);
-    setLastId(lastId + 1);
+  const editNote = () => {
+    setNotes(notes.map((note, index) => {
+      if (index == noteIndex) {
+        return {
+          id: note.id,
+          title: title,
+          content: content,
+          date: note.date,
+          color: note.color
+        }
+      }
+      else return note;
+    }));
     setTitle("");
     setContent("");
     navigation.navigate("list");
   }
+
+  
+  useEffect(() => {
+    setTitle(notes[noteIndex].title);
+    setContent(notes[noteIndex].content);
+  }, [noteIndex])
 
   return (
     <View style={styles.wrapper}>
@@ -46,12 +53,19 @@ const AddNote = (props) => {
         multiline={true}
         onChangeText={(text) => setContent(text)}
       />
-      <MyButton color="#ff000099" text="Confirm" pressFunc={addNote}/>
+      <View style={styles.buttonWrapper}>
+        <MyButton style={styles.button} color="#1a1a1a" text="Cancel" pressFunc={() => {
+          setTitle(notes[noteIndex].title);
+          setContent(notes[noteIndex].content);
+          navigation.navigate("list");
+        }}/>
+        <MyButton style={styles.button} color="#ff000099" text="Confirm" pressFunc={editNote}/>
+      </View>
     </View>
   )
 }
 
-export default AddNote
+export default EditNote
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -87,4 +101,14 @@ const styles = StyleSheet.create({
     height: "auto",
     fontSize: 12
   },
+  buttonWrapper: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "space-between"
+  },
+  button: {
+    flex: 1
+  }
 })

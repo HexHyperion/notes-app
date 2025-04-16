@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import NoteList from './screens/NoteList';
 import AddNote from './screens/AddNote';
+import EditNote from './screens/EditNote';
 import * as SecureStore from "expo-secure-store";
 import Info from "./assets/info-square.png";
 import Plus from "./assets/plus-square.png";
@@ -59,13 +60,24 @@ export default function App() {
   const CustomDrawerContent = (props) => {
     return (
       <DrawerContentScrollView {...props} style={styles.menu} contentContainerStyle={{display: "flex", justifyContent: "center", height: "100%"}}>
-        <Text style={styles.title}>Notes App pt. 1</Text>
+        <Text style={styles.title}>Notes App pt. 2</Text>
         <Text style={styles.subtitle}>Save and delete notes</Text>
-        <DrawerItemList {...props}/>
+        <DrawerItem
+          label="Note list"
+          labelStyle={styles.menuItem}
+          onPress={() => props.navigation.navigate("list")}
+          icon={() => <Image style={styles.icon} source={Stickies}/>}
+        />
+        <DrawerItem
+          label="Add note"
+          labelStyle={styles.menuItem}
+          onPress={() => props.navigation.navigate("add")}
+          icon={() => <Image style={styles.icon} source={Plus}/>}
+        />
         <DrawerItem
           label="Info"
           labelStyle={styles.menuItem}
-          onPress={() => Alert.alert("App Info", "NotesApp pt. 1 by Szymon Urbaniak, 3P2")}
+          onPress={() => Alert.alert("App Info", "NotesApp pt. 2 by Szymon Urbaniak, 3P2")}
           icon={() => <Image style={styles.icon} source={Info}/>}
         />
       </DrawerContentScrollView>
@@ -93,7 +105,18 @@ export default function App() {
           drawerIcon: () => <Image style={styles.icon} source={Stickies}/>,
           ...drawerOptions
         }}>
-          {() => <NoteList notes={notes} setNotes={setNotes} lastId={lastId} setLastId={setLastId} randomColors={randomColors} loadNotes={loadNotes} saveNotes={saveNotes}/>}
+          {({navigation}) => (
+            <NoteList
+              notes={notes}
+              setNotes={setNotes}
+              lastId={lastId}
+              setLastId={setLastId}
+              randomColors={randomColors}
+              loadNotes={loadNotes}
+              saveNotes={saveNotes}
+              navigation={navigation}
+            />
+          )}
         </Drawer.Screen>
 
         <Drawer.Screen name="add" options={{
@@ -110,6 +133,21 @@ export default function App() {
               setLastId={setLastId}
               randomColors={randomColors}
               navigation={navigation}
+            />
+          )}
+        </Drawer.Screen>
+
+        <Drawer.Screen name="edit" options={{
+          drawerLabel: "Edit note",
+          headerTitle: "Edit note...",
+          ...drawerOptions
+        }}>
+          {({navigation, route}) => (
+            <EditNote
+              notes={notes}
+              setNotes={setNotes}
+              navigation={navigation}
+              route={route}
             />
           )}
         </Drawer.Screen>
