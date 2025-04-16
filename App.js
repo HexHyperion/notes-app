@@ -6,6 +6,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import NoteList from './screens/NoteList';
 import AddNote from './screens/AddNote';
 import EditNote from './screens/EditNote';
+import AddCategory from './screens/AddCategory';
 import * as SecureStore from "expo-secure-store";
 import Info from "./assets/info-square.png";
 import Plus from "./assets/plus-square.png";
@@ -18,6 +19,7 @@ export default function App() {
 
   const [lastId, setLastId] = React.useState(0);
   const [notes, setNotes] = React.useState([]);
+  const [categories, setCategories] = React.useState(["test", "test2"]);
   const [isNotesLoaded, setIsNotesLoaded] = React.useState(false);
 
   const saveNotes = async () => {
@@ -25,6 +27,7 @@ export default function App() {
     try {
       await SecureStore.setItemAsync("notes", JSON.stringify(notes));
       await SecureStore.setItemAsync("lastId", JSON.stringify(lastId));
+      await SecureStore.setItemAsync("categories", JSON.stringify(categories));
     }
     catch (error) {
       console.error("Failed to save notes:", error);
@@ -35,9 +38,11 @@ export default function App() {
     try {
       const storedNotes = await SecureStore.getItemAsync("notes");
       const storedLastId = await SecureStore.getItemAsync("lastId");
+      const storedCategories = await SecureStore.getItemAsync("categories");
 
       if (storedLastId) setLastId(JSON.parse(storedLastId));
       if (storedNotes) setNotes(JSON.parse(storedNotes));
+      if (storedCategories) setCategories(JSON.parse(storedCategories));
     }
     catch (error) {
       console.error("Failed to load notes:", error);
@@ -72,6 +77,12 @@ export default function App() {
           label="Add note"
           labelStyle={styles.menuItem}
           onPress={() => props.navigation.navigate("add")}
+          icon={() => <Image style={styles.icon} source={Plus}/>}
+        />
+        <DrawerItem
+          label="Add category"
+          labelStyle={styles.menuItem}
+          onPress={() => props.navigation.navigate("addCat")}
           icon={() => <Image style={styles.icon} source={Plus}/>}
         />
         <DrawerItem
@@ -148,6 +159,21 @@ export default function App() {
               setNotes={setNotes}
               navigation={navigation}
               route={route}
+            />
+          )}
+        </Drawer.Screen>
+
+        <Drawer.Screen name="addCat" options={{
+          drawerLabel: "Add category",
+          headerTitle: "Add category...",
+          drawerIcon: () => <Image style={styles.icon} source={Plus}/>,
+          ...drawerOptions
+        }}>
+          {({navigation}) => (
+            <AddCategory
+              categories={categories}
+              setCategories={setCategories}
+              navigation={navigation}
             />
           )}
         </Drawer.Screen>

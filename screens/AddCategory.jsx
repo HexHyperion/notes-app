@@ -3,28 +3,15 @@ import React from 'react'
 import MyButton from '../components/MyButton'
 
 const AddCategory = (props) => {
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
+  const [name, setName] = React.useState("");
 
-  const notes = props.notes;
-  const setNotes = props.setNotes;
-  const lastId = props.lastId;
-  const setLastId = props.setLastId;
-  const randomColors = props.randomColors;
+  const categories = props.categories;
+  const setCategories = props.setCategories;
   const navigation = props.navigation;
 
   const addCategory = async () => {
-    const note = {
-      id: lastId + 1,
-      title: title,
-      content: content,
-      date: new Date().toLocaleDateString(),
-      color: randomColors[Math.floor(Math.random() * randomColors.length)]
-    }
-    setNotes([...notes, note]);
-    setLastId(lastId + 1);
-    setTitle("");
-    setContent("");
+    setCategories(...categories, name);
+    setName("");
     navigation.navigate("list");
   }
 
@@ -32,13 +19,13 @@ const AddCategory = (props) => {
     <View style={styles.wrapper}>
       <TextInput
         style={styles.input}
-        defaultValue={title}
+        defaultValue={name}
         placeholder="Name..."
         placeholderTextColor="#ffffffbb"
         multiline={false}
-        onChangeText={(text) => setTitle(text)}
+        onChangeText={(text) => setName(text)}
       />
-      <MyButton color="#ff000099" text="Confirm" pressFunc={addNote}/>
+      <MyButton color="#ff000099" text="Confirm" pressFunc={addCategory}/>
     </View>
   )
 }
