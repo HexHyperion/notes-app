@@ -123,7 +123,7 @@ export default function App() {
 const styles = StyleSheet.create({
   menu: {
     backgroundColor: "black",
-    fontSize: 14,
+    fontSize: 16,
   },
   menuItem: {
     color: "white",
