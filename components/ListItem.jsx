@@ -15,13 +15,13 @@ const ListItem = ({title, content, date, category, deleteFunc, style, index, nav
       }}
       style={{...styles.wrapper, ...style}}
     >
-      <View style={{...styles.insideWrapper, paddingTop: category ? 30 : 0}}>
+      <View style={{...styles.insideWrapper, paddingTop: category ? 25 : 0}}>
         {category ?
           <View style={styles.category}>
             <Text style={{...styles.text, color: style.backgroundColor, fontWeight: 900, fontSize: 10}}>{category}</Text>
           </View>
         : null}
-        <Text style={{...styles.text, fontWeight: "bold", fontSize: 18}}>{title}</Text>
+        <Text style={{...styles.text, fontWeight: "bold", fontSize: 14}}>{title}</Text>
         <Text style={styles.text}>{date}</Text>
         <Text style={styles.text}>{content}</Text>
       </View>
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
   category: {
     position: "absolute",
     display: "flex",
-    padding: 5,
+    paddingInline: 5,
+    paddingBlock: 2,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#1a1a1a",
