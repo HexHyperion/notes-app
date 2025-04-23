@@ -1,13 +1,16 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect } from 'react'
 import MyButton from '../components/MyButton'
+import { Picker } from '@react-native-picker/picker'
 
 const EditNote = ({route, ...props}) => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
+  const [category, setCategory] = React.useState("");
   
   const noteIndex = route.params.noteIndex;
   const notes = props.notes;
+  const categories = props.categories;
   const setNotes = props.setNotes;
   const navigation = props.navigation;
 
@@ -19,6 +22,7 @@ const EditNote = ({route, ...props}) => {
           title: title,
           content: content,
           date: note.date,
+          category: category,
           color: note.color
         }
       }
@@ -33,6 +37,7 @@ const EditNote = ({route, ...props}) => {
   useEffect(() => {
     setTitle(notes[noteIndex].title);
     setContent(notes[noteIndex].content);
+    setCategory(notes[noteIndex].category);
   }, [noteIndex])
 
   return (
@@ -53,10 +58,24 @@ const EditNote = ({route, ...props}) => {
         multiline={true}
         onChangeText={(text) => setContent(text)}
       />
+      <View style={styles.pickerWrapper}>
+        <Picker
+          style={styles.picker}
+          mode="dropdown"
+          dropdownIconColor="white"
+          selectedValue={notes[noteIndex].category}
+          onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+        >
+          {categories.map((category, index) => (
+            <Picker.Item key={index} label={category} value={category} color="white" style={styles.pickerItem}/>
+          ))}
+        </Picker>
+      </View>
       <View style={styles.buttonWrapper}>
         <MyButton style={styles.button} color="#1a1a1a" text="Cancel" pressFunc={() => {
           setTitle(notes[noteIndex].title);
           setContent(notes[noteIndex].content);
+          setCategory(notes[noteIndex].category)
           navigation.navigate("list");
         }}/>
         <MyButton style={styles.button} color="#ff000099" text="Confirm" pressFunc={editNote}/>
@@ -110,5 +129,18 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1
+  },
+  pickerWrapper: {
+    borderRadius: 10,
+    overflow: "hidden"
+  },
+  picker: {
+    backgroundColor: "#1a1a1a",
+    color: "white"
+  },
+  pickerItem: {
+    fontFamily: "monospace",
+    backgroundColor: "#1a1a1a",
+    fontSize: 12
   }
 })

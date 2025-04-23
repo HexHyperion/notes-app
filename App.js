@@ -19,7 +19,7 @@ export default function App() {
 
   const [lastId, setLastId] = React.useState(0);
   const [notes, setNotes] = React.useState([]);
-  const [categories, setCategories] = React.useState(["test", "test2"]);
+  const [categories, setCategories] = React.useState([]);
   const [isNotesLoaded, setIsNotesLoaded] = React.useState(false);
 
   const saveNotes = async () => {
@@ -31,6 +31,10 @@ export default function App() {
     }
     catch (error) {
       console.error("Failed to save notes:", error);
+    }
+    finally {
+      console.log(`Categories saved: ${categories}`);
+      
     }
   };
 
@@ -49,6 +53,7 @@ export default function App() {
     }
     finally {
       setIsNotesLoaded(true);
+      console.log(`Categories loaded: ${categories}`);
     }
   };
 
@@ -59,7 +64,11 @@ export default function App() {
 
   React.useEffect(() => {
     saveNotes();
-  }, [notes]);
+  }, [notes, categories]);
+
+  React.useEffect(() => {
+    console.log(categories);
+  }, [categories])
 
 
   const CustomDrawerContent = (props) => {
@@ -139,6 +148,7 @@ export default function App() {
           {({navigation}) => (
             <AddNote
               notes={notes}
+              categories={categories}
               setNotes={setNotes}
               lastId={lastId}
               setLastId={setLastId}
@@ -156,6 +166,7 @@ export default function App() {
           {({navigation, route}) => (
             <EditNote
               notes={notes}
+              categories={categories}
               setNotes={setNotes}
               navigation={navigation}
               route={route}

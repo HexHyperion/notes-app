@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableHighlight, Alert } from 'react-native'
 import React from 'react'
 
-const ListItem = ({title, content, date, deleteFunc, style, index, navigation, route}) => {
+const ListItem = ({title, content, date, category, deleteFunc, style, index, navigation, route}) => {
   return (
     <TouchableHighlight
       onPress={() => {
@@ -15,7 +15,12 @@ const ListItem = ({title, content, date, deleteFunc, style, index, navigation, r
       }}
       style={{...styles.wrapper, ...style}}
     >
-      <View style={styles.insideWrapper}>
+      <View style={{...styles.insideWrapper, paddingTop: category ? 30 : 0}}>
+        {category ?
+          <View style={styles.category}>
+            <Text style={{...styles.text, color: style.backgroundColor, fontWeight: 900, fontSize: 10}}>{category}</Text>
+          </View>
+        : null}
         <Text style={{...styles.text, fontWeight: "bold", fontSize: 18}}>{title}</Text>
         <Text style={styles.text}>{date}</Text>
         <Text style={styles.text}>{content}</Text>
@@ -55,4 +60,13 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
+  category: {
+    position: "absolute",
+    display: "flex",
+    padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1a1a1a",
+    borderRadius: 5
+  }
 })

@@ -10,7 +10,7 @@ const AddCategory = (props) => {
   const navigation = props.navigation;
 
   const addCategory = async () => {
-    setCategories(...categories, name);
+    setCategories([...categories, name]);
     setName("");
     navigation.navigate("list");
   }

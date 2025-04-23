@@ -33,6 +33,7 @@ const NoteList = (props) => {
           title={item.title}
           content={item.content}
           date={item.date}
+          category={item.category}
           deleteFunc={() => deleteUser(item)}
           navigation={props.navigation}
           index={index}
