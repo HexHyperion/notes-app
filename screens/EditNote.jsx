@@ -28,8 +28,6 @@ const EditNote = ({route, ...props}) => {
       }
       else return note;
     }));
-    setTitle("");
-    setContent("");
     navigation.navigate("list");
   }
 
