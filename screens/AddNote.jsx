@@ -32,6 +32,12 @@ const AddNote = (props) => {
     navigation.navigate("list");
   }
 
+  React.useEffect(() => {
+    if (categories.length > 0) {
+      setCategory(categories[0]);
+    }
+  }, []);
+
   return (
     <View style={styles.wrapper}>
       <TextInput
@@ -55,6 +61,7 @@ const AddNote = (props) => {
           style={styles.picker}
           mode="dropdown"
           dropdownIconColor="white"
+          selectedValue={category}
           onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
         >
           {categories.map((category, index) => (
